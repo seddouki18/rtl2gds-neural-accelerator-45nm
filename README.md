@@ -17,12 +17,12 @@ Hardware implementation of a memory-bound Artificial Neural Network (ANN) accele
 
 ## Key Hardware & Physical Highlights (Sign-off)
 
-* **Bounded Determinism:** End-to-end execution latency strictly locked at **467 clock cycles** ($0\text{ ps}$ jitter)[cite: 22].
-* **Ultra-Fast Emergency Reflex:** $6.42\ \mu\text{s}$ decision time at $72.67\text{ MHz}$ ($9.34\ \mu\text{s}$ at $50\text{ MHz}$ nominal)[cite: 22].
-* **Zero Braking Distance Penalty:** Vehicle travels only **$0.21\text{ mm}$** at $120\text{ km/h}$ during inference processing[cite: 22].
-* **High-Density Silicon Implementation:** **$98.426\%$** core density over a $1.008\text{ mm}^2$ die ($444,158$ equivalent logic gates)[cite: 22].
-* **Low Power Footprint:** Total dissipation of **$43.66\text{ mW}$** at $50\text{ MHz}$ ($1.08\text{ V}$, slow corner, $125^\circ\text{C}$) with only $15.97\ \mu\text{W}$ leakage[cite: 20, 22].
-* **Full Timing Closure:** Worst Negative Slack (WNS) setup = **$+6.239\text{ ns}$**, WNS hold = **$+0.049\text{ ns}$**, balanced clock skew = **$60.1\text{ ps}$** across $18,310$ sinks[cite: 16, 17, 22].
+* **Bounded Determinism:** End-to-end execution latency strictly locked at **467 clock cycles** ($0\text{ ps}$ jitter).
+* **Ultra-Fast Emergency Reflex:** $6.42\ \mu\text{s}$ decision time at $72.67\text{ MHz}$ ($9.34\ \mu\text{s}$ at $50\text{ MHz}$ nominal).
+* **Zero Braking Distance Penalty:** Vehicle travels only **$0.21\text{ mm}$** at $120\text{ km/h}$ during inference processing.
+* **High-Density Silicon Implementation:** **$98.426\%$** core density over a $1.008\text{ mm}^2$ die ($444,158$ equivalent logic gates).
+* **Low Power Footprint:** Total dissipation of **$43.66\text{ mW}$** at $50\text{ MHz}$ ($1.08\text{ V}$, slow corner, $125^\circ\text{C}$) with only $15.97\ \mu\text{W}$ leakage.
+* **Full Timing Closure:** Worst Negative Slack (WNS) setup = **$+6.239\text{ ns}$**, WNS hold = **$+0.049\text{ ns}$**, balanced clock skew = **$60.1\text{ ps}$** across $18,310$ sinks.
 * **Physical Integrity:** **$0\text{ DRC violations}$**, **$0\text{ LVS open/shorts}$**, **$0\text{ process antenna errors}$**[cite: 19, 22].
 
 ---
@@ -34,17 +34,17 @@ Hardware implementation of a memory-bound Artificial Neural Network (ANN) accele
 </p>
 
 ### Neural Topology & Arithmetic
-* **Configuration:** Multi-Layer Perceptron (MLP) with $4 \to 8 \to 16 \to 16 \to 2$ dense layers ($490$ parameters total)[cite: 22].
-* **Input Layer (4 Sensors):** Distance $d \in [2, 100]\text{ m}$, Ego speed $v \in [10, 120]\text{ km/h}$, Azimuth angle $\theta \in [-30^\circ, +30^\circ]$, Relative speed $v_{rel} \in [-33, +33]\text{ m/s}$[cite: 22].
-* **Hidden Layers (L1, L2, L3):** Pipelined affine dot-products followed by hardware clipped ReLU activation: $\text{act} = \text{clip}(\max(0, S \gg 5), 0, 31)$[cite: 22].
-* **Output Layer (L4):** Raw linear activation outputs without saturation, exposing direct continuous driving dynamics (`Score AEB`, `Score Steering`)[cite: 22].
-* **Quantization Scheme:** Uniform INT8 symmetric mapping with power-of-two scale factor $S = 32.0$ ($Qx.5$ fixed-point arithmetic)[cite: 22]. Multiplication/division scaling is implemented with purely hardwired bit shifts (`<<< 5` and `>>> 5`), eliminating division circuits on silicon[cite: 22].
+* **Configuration:** Multi-Layer Perceptron (MLP) with $4 \to 8 \to 16 \to 16 \to 2$ dense layers ($490$ parameters total).
+* **Input Layer (4 Sensors):** Distance $d \in [2, 100]\text{ m}$, Ego speed $v \in [10, 120]\text{ km/h}$, Azimuth angle $\theta \in [-30^\circ, +30^\circ]$, Relative speed $v_{rel} \in [-33, +33]\text{ m/s}$.
+* **Hidden Layers (L1, L2, L3):** Pipelined affine dot-products followed by hardware clipped ReLU activation: $\text{act} = \text{clip}(\max(0, S \gg 5), 0, 31)$.
+* **Output Layer (L4):** Raw linear activation outputs without saturation, exposing direct continuous driving dynamics (`Score AEB`, `Score Steering`).
+* **Quantization Scheme:** Uniform INT8 symmetric mapping with power-of-two scale factor $S = 32.0$ ($Qx.5$ fixed-point arithmetic). Multiplication/division scaling is implemented with purely hardwired bit shifts (`<<< 5` and `>>> 5`), eliminating division circuits on silicon.
 
 ---
 
 ## Datapath & Memory Hierarchy
 
-The compute fabric resolves the classical memory-bound penalty of neural accelerators using spatial computing and asynchronous double buffering[cite: 22].
+The compute fabric resolves the classical memory-bound penalty of neural accelerators using spatial computing and asynchronous double buffering.
 
 <p align="center">
   <img src="docs/figures/tree_mac_datapath.png" width="48%" alt="Tree-MAC Adder Tree"/>
@@ -53,14 +53,14 @@ The compute fabric resolves the classical memory-bound penalty of neural acceler
 
 ### Tree-MAC Compute Engine
 Instead of looping over MAC units, the core features dedicated spatial tree structures:
-* **`adder_tree_4.sv`:** 4 signed INT8 multipliers with 2-stage Carry-Save Reduction (Couche 1)[cite: 22].
-* **`adder_tree_8.sv`:** 8 parallel multipliers with 3-stage pipelined binary tree (Couche 2)[cite: 22].
-* **`adder_tree_16.sv`:** 16 parallel signed multipliers ($8 \times 8 \to 16\text{ bits}$), reducing products through a 4-level balanced Carry-Save Adder (CSA) adder tree directly into 32-bit signed accumulators to completely eliminate intermediate arithmetic overflow[cite: 22].
+* **`adder_tree_4.sv`:** 4 signed INT8 multipliers with 2-stage Carry-Save Reduction (Couche 1).
+* **`adder_tree_8.sv`:** 8 parallel multipliers with 3-stage pipelined binary tree (Couche 2).
+* **`adder_tree_16.sv`:** 16 parallel signed multipliers ($8 \times 8 \to 16\text{ bits}$), reducing products through a 4-level balanced Carry-Save Adder (CSA) adder tree directly into 32-bit signed accumulators to completely eliminate intermediate arithmetic overflow.
 
 ### Ping-Pong Memory Subsystem (`mem_controller.vhd`)
-* **Local SRAM Bank A ($272\text{ Bytes}$):** Serves odd layers (L1 & L3)[cite: 22].
-* **Local SRAM Bank B ($144\text{ Bytes}$):** Serves even layers (L2 & L4)[cite: 22].
-* While `compute_core.sv` calculates layer $N$ using active bank weights, a dedicated DMA channel fetches layer $N+1$ coefficients from `weights_rom.sv` in the background[cite: 22]. Memory latency is completely hidden without runtime stalls[cite: 22].
+* **Local SRAM Bank A ($272\text{ Bytes}$):** Serves odd layers (L1 & L3).
+* **Local SRAM Bank B ($144\text{ Bytes}$):** Serves even layers (L2 & L4).
+* While `compute_core.sv` calculates layer $N$ using active bank weights, a dedicated DMA channel fetches layer $N+1$ coefficients from `weights_rom.sv` in the background. Memory latency is completely hidden without runtime stalls.
 
 <p align="center">
   <img src="docs/figures/fsm_state_diagram.png" width="45%" alt="FSM Controller State Machine"/>
@@ -70,7 +70,7 @@ Instead of looping over MAC units, the core features dedicated spatial tree stru
 
 ## Cycle Breakdown & ISO 26262 Determinism
 
-Execution latency across each finite state machine step is fully invariant[cite: 22]:
+Execution latency across each finite state machine step is fully invariant:
 
 | Pipeline Step | FSM State | Computation (`compute_core`) | Concurrent Memory DMA | Clocks |
 | :--- | :--- | :--- | :--- | :--- |
@@ -84,13 +84,13 @@ Execution latency across each finite state machine step is fully invariant[cite:
 | **Total** | — | **Deterministic Worst-Case Execution Time (WCET)** | **Zero DMA Stall** | **467 cycles** |
 
 ### Hardware Safety Watchdog (`timing_monitor.sv`)
-An internal real-time hardware counter samples the execution time from `start_inference` to `final_valid`[cite: 22]. A threshold limit (`MAX_LATENCY = 1000` cycles, $2.14\times$ nominal margin) guarantees fail-safe operation: if latency ever exceeds 1000 cycles ($13.76\ \mu\text{s}$ at $72.67\text{ MHz}$), an interrupt flag `wcet_violation` triggers instant vehicle safety failback[cite: 22].
+An internal real-time hardware counter samples the execution time from `start_inference` to `final_valid`. A threshold limit (`MAX_LATENCY = 1000` cycles, $2.14\times$ nominal margin) guarantees fail-safe operation: if latency ever exceeds 1000 cycles ($13.76\ \mu\text{s}$ at $72.67\text{ MHz}$), an interrupt flag `wcet_violation` triggers instant vehicle safety failback.
 
 ---
 
 ## Verification & Simulation Results
 
-Extensive validation was conducted under ModelSim SE using 20 real-world driving test vectors[cite: 22].
+Extensive validation was conducted under ModelSim SE using 20 real-world driving test vectors.
 
 <p align="center">
   <img src="docs/figures/inference_waveform_467cycles.png" width="100%" alt="Inference Waveform ModelSim"/>
@@ -100,14 +100,14 @@ Extensive validation was conducted under ModelSim SE using 20 real-world driving
   <img src="docs/figures/wcet_validation_waveform.png" width="80%" alt="WCET Validation Waveform"/>
 </p>
 
-* **Bit-Exact Equivalence:** 100% decision match ($0/20$ divergences) with Mean Absolute Error ($\text{MAE} = 0$) relative to the Python fixed-point model[cite: 22].
-* **Classification Coverage:** Validated across Autonomous Emergency Braking (AEB), Emergency Steering Avoidance, Normal Cruise, and Combined Reaction scenarios[cite: 22].
+* **Bit-Exact Equivalence:** 100% decision match ($0/20$ divergences) with Mean Absolute Error ($\text{MAE} = 0$) relative to the Python fixed-point model.
+* **Classification Coverage:** Validated across Autonomous Emergency Braking (AEB), Emergency Steering Avoidance, Normal Cruise, and Combined Reaction scenarios.
 
 ---
 
 ## Silicon Physical Implementation (Cadence Flow)
 
-The physical realization was executed using the Cadence RTL-to-GDSII flow on GPDK 45nm standard cell technology[cite: 22].
+The physical realization was executed using the Cadence RTL-to-GDSII flow on GPDK 45nm standard cell technology.
 
 <p align="center">
   <img src="docs/figures/rtl_to_gdsii_flow.png" width="48%" alt="Cadence ASIC Flow"/>
