@@ -1,0 +1,5 @@
+# Ignore generated gate-level netlists from language statistics
+*.v linguist-generated=true
+
+# Correct ModelSim .do script detection (avoid Stata)
+*.do linguist-language=Tcl
