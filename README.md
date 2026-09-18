@@ -142,44 +142,46 @@ The physical realization was executed using the Cadence RTL-to-GDSII flow on GPD
 
 ```text
 .
-├── RTL/                         # Synthesizable RTL descriptions
-│   ├── adas_accelerator_top.sv  # Top-level integration wrapper
-│   ├── compute_core.sv          # Spatial computation matrix
-│   ├── adder_tree_4.sv          # 4-input Carry-Save adder tree (Layer 1)
-│   ├── adder_tree_8.sv          # 8-input Carry-Save adder tree (Layer 2)
-│   ├── adder_tree_16.sv         # 16-input Carry-Save adder tree (Layers 3 & 4)
-│   ├── fsm_controller.sv        # Deterministic sequencer
-│   ├── timing_monitor.sv        # ISO 26262 watchdog hardware monitor
-│   ├── weights_rom.sv           # Quantized weight ROM macro (490 Bytes)
-│   ├── mem_controller.vhd       # Dual-bank Ping-Pong memory controller (VHDL)
-│   └── spm_activations.vhd      # Activation scratchpad register bank (VHDL)
-├── SIM/                         # Simulation environment & verification
-│   ├── tb_adas_top.sv           # Modular self-checking testbench
-│   ├── run_sim                  # Simulation launch script
-│   ├── sensor_data.txt          # 20 real-world driving test vectors
-│   └── weights.txt              # Hexadecimal quantized synaptic weights
-├── SW/                          # Python machine learning framework
-│   ├── dataset_adas.csv         # 160,000 synthetic driving scenarios
-│   ├── best_model.pth           # Trained PyTorch model checkpoint
-│   └── poids.py                 # Training & INT8 quantization script
-├── backend/                     # ASIC physical implementation files
+├── RTL/                                # Synthesizable RTL descriptions (SystemVerilog & VHDL)
+│   ├── adas_accelerator_top.sv         # Top-level integration wrapper & system I/O
+│   ├── compute_core.sv                 # Sensor normalization & 4-layer adder tree pipeline
+│   ├── adder_tree_4.sv                 # 4-input Carry-Save adder tree (Layer 1)
+│   ├── adder_tree_8.sv                 # 8-input Carry-Save adder tree (Layer 2)
+│   ├── adder_tree_16.sv                # 16-input Carry-Save adder tree (Layers 3 & 4)
+│   ├── fsm_controller.sv               # Layer-by-layer deterministic sequencer & DMA triggers
+│   ├── timing_monitor.sv               # ISO 26262 hardware cycle counter & WCET watchdog
+│   ├── weights_rom.sv                  # Quantized weight ROM macro (490 Bytes INT8)
+│   ├── mem_controller.vhd              # Dual-bank Ping-Pong memory controller (VHDL)
+│   └── spm_activations.vhd             # 4-input activation scratchpad register bank (VHDL)
+├── SIM/                                # Simulation environment & verification (ModelSim SE)
+│   ├── tb_adas_top.sv                  # Self-checking testbench comparing RTL vs Golden Python
+│   ├── run_sim.do                      # ModelSim automated compilation & multi-panel wave script
+│   ├── sensor_data.txt                 # 40 driving test vectors (10 per decision class, 32-bit)
+│   └── weights.txt                     # Hexadecimal INT8 quantized synaptic weights (490 Bytes)
+├── SW/                                 # Python machine learning & quantization framework
+│   ├── poids.py                        # Model training, INT8 quantization & RTL export script
+│   ├── dataset_adas.csv                # Synthetic driving dataset (160,000 driving scenarios)
+│   ├── best_model.pth                  # Trained PyTorch model checkpoint (State Dict)
+│   ├── weights.txt                     # Exported quantized weights for RTL initialisation
+│   └── sensor_data.txt                 # Exported 40 test frames for RTL simulation
+├── backend/                            # ASIC physical implementation files (Cadence 45nm)
 │   ├── constraints/
-│   │   ├── adas_constraints.sdc # SDC timing constraints (50 MHz)
-│   │   └── clk.spec             # CTS clock tree specification file
+│   │   ├── adas_constraints.sdc        # SDC timing constraints (50 MHz target)
+│   │   └── clk.spec                    # CTS clock tree specification file
 │   ├── scripts/
-│   │   ├── syn_adas.tcl         # Cadence Genus synthesis script
-│   │   └── init.tcl             # Cadence Encounter initialization script
+│   │   ├── syn_adas.tcl                # Cadence Genus logic synthesis script
+│   │   └── init.tcl                    # Cadence Encounter floorplanning & init script
 │   ├── netlist/
-│   │   └── adas_top_synth.v     # Structural gate-level netlist (Post-Synthesis)
-│   └── reports/                 # Formal sign-off verification logs
-│       ├── report_timing.rpt    # Static timing analysis report (Pre-layout)
-│       ├── report_area.rpt      # Cell & area hierarchical report
-│       ├── report_power.rpt     # Statistical power report
-│       ├── adas_accelerator_top_postRoute.summary      # Setup sign-off summary
-│       ├── adas_accelerator_top_postRoute_hold.summary # Hold sign-off summary
+│   │   └── adas_top_synth.v            # Structural gate-level netlist (Post-Synthesis)
+│   └── reports/                        # Formal sign-off verification logs & reports
+│       ├── report_timing.rpt           # Static timing analysis report (Pre-layout)
+│       ├── report_area.rpt             # Cell & area hierarchical report
+│       ├── report_power.rpt            # Statistical power report
+│       ├── adas_accelerator_top_postRoute.summary      # Setup timing sign-off summary
+│       ├── adas_accelerator_top_postRoute_hold.summary # Hold timing sign-off summary
 │       ├── adas_accelerator_top_cts.rpt                # CTS clock distribution log
-│       ├── connectivity.rpt     # Formal LVS connectivity report (0 open/short)
-│       ├── power_final.rpt      # Final power extraction report (43.66 mW)
-│       └── summary_final.rpt    # 379,783 physical cell inventory report
+│       ├── connectivity.rpt            # Formal LVS connectivity report (0 open/short)
+│       ├── power_final.rpt             # Final post-route power extraction (43.66 mW)
+│       └── summary_final.rpt           # Physical cell inventory report (379,783 cells)
 └── docs/
-    └── figures/                 # Layout captures, datapath schematics & waveforms
+    └── figures/                        # 11 Sign-off layout captures, schematics & waveforms
