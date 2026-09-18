@@ -1,0 +1,92 @@
+*----------------------------------------------------------------------------------------
+*	Encounter 13.10-p003_1 (32bit) 04/17/2013 15:43 (Linux 2.6)
+*	
+*
+* 	Date & Time:	2026-Sep-05 23:27:50 (2026-Sep-05 17:27:50 GMT)
+*
+*----------------------------------------------------------------------------------------
+*
+*	Design: adas_accelerator_top
+*
+*	Liberty Libraries used: 
+*	        /home/buet/cadence/EDI/share/FoundationFlows/EXAMPLES/EDI/DESIGN/GPDK/LIBS/GPDK045/timing/slow.lib
+*
+*	Power Domain used: 
+*		Rail:        VDD 	Voltage:       1.08 
+*
+*       Power View : view_setup
+*
+*       User-Defined Activity : N.A.
+*
+*       Activity File: N.A.
+*
+*       Hierarchical Global Activity: N.A.
+*
+*       Global Activity: N.A.
+*
+*       Sequential Element Activity: N.A.
+*
+*       Primary Input Activity: 0.200000
+*
+*       Default icg ratio: N.A.
+*
+*       Global Comb ClockGate Ratio: N.A.
+*
+*	Power Units = 1mW
+*
+*	Time Units = 1e-09 secs 
+*
+*       reportPower -outfile power_final.rpt
+*
+-----------------------------------------------------------------------------------------
+
+
+Total Power 
+-----------------------------------------------------------------------------------------
+Total Internal Power:       25.03870316 	   57.3538%
+Total Switching Power:      18.60187870 	   42.6096%
+Total Leakage Power:         0.01596731 	    0.0366%
+Total Power:                43.65654918 
+-----------------------------------------------------------------------------------------
+
+
+Group                           Internal   Switching     Leakage       Total  Percentage 
+                                Power      Power         Power         Power  (%)        
+-----------------------------------------------------------------------------------------
+Sequential                         15.73       1.347    0.006387       17.08       39.13 
+Macro                                  0           0           0           0           0 
+IO                                     0           0           0           0           0 
+Combinational                      8.924       15.15    0.009283       24.08       55.17 
+Clock (Combinational)             0.3832       2.105   0.0002976       2.488       5.699 
+Clock (Sequential)                     0           0           0           0           0 
+-----------------------------------------------------------------------------------------
+Total                              25.04        18.6     0.01597       43.66         100 
+-----------------------------------------------------------------------------------------
+
+
+Rail                  Voltage   Internal   Switching     Leakage       Total  Percentage 
+                                Power      Power         Power         Power  (%)        
+-----------------------------------------------------------------------------------------
+VDD                      1.08      25.04        18.6     0.01597       43.66         100 
+
+
+Clock                           Internal   Switching     Leakage       Total  Percentage 
+                                Power      Power         Power         Power  (%)        
+-----------------------------------------------------------------------------------------
+clk                               0.3832       2.105   0.0002976       2.488       5.699 
+-----------------------------------------------------------------------------------------
+Total (excluding duplicates)      0.3832       2.105   0.0002976       2.488       5.699 
+-----------------------------------------------------------------------------------------
+
+
+-----------------------------------------------------------------------------------------
+*	Power Distribution Summary: 
+* 		Highest Average Power:               clk__L6_I31 (INVX20): 	   0.01032 
+* 		Highest Leakage Power:             my_rom/g57877 (NAND4X8): 	 1.005e-06 
+* 		Total Cap: 	1.03626e-09 F
+* 		Total instances in design: 127900
+* 		Total instances in design with no power:     0
+*          Total instances in design with no activity:     0
+* 		Total Fillers and Decap:     0
+-----------------------------------------------------------------------------------------
+
