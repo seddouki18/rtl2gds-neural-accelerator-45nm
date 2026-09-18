@@ -156,7 +156,7 @@ The physical realization was executed using the Cadence RTL-to-GDSII flow on GPD
 ├── SIM/                                # Simulation environment & verification (ModelSim SE)
 │   ├── tb_adas_top.sv                  # Self-checking testbench comparing RTL vs Golden Python
 │   ├── run_sim.do                      # ModelSim automated compilation & multi-panel wave script
-│   ├── sensor_data.txt                 # 40 driving test vectors (10 per decision class, 32-bit)
+│   ├── sensor_data.txt                 # 20 driving test vectors (10 per decision class, 32-bit)
 │   └── weights.txt                     # Hexadecimal INT8 quantized synaptic weights (490 Bytes)
 ├── SW/                                 # Python machine learning & quantization framework
 │   ├── poids.py                        # Model training, INT8 quantization & RTL export script
