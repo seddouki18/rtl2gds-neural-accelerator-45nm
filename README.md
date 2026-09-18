@@ -1,9 +1,9 @@
 # Deterministic Neural Network ASIC Accelerator in 45nm CMOS for ISO 26262 ADAS (AEB / AES)
 
-![Technology](https://img.shields.io/badge/Technology-GPDK_45nm_1P9M-blue.svg)
-![EDA Tools](https://img.shields.io/badge/EDA-Cadence_Genus_%2F_Encounter_%2F_Virtuoso-red.svg)
-![Simulation](https://img.shields.io/badge/Simulation-ModelSim_SE-green.svg)
-![Standard](https://img.shields.io/badge/Compliance-ISO_26262_ASIL--D-orange.svg)
+[![Technology](https://img.shields.io/badge/Technology-GPDK_45nm_1P9M-blue.svg)](#silicon-physical-implementation-cadence-flow)
+[![EDA Tools](https://img.shields.io/badge/EDA-Cadence_Genus_%2F_Encounter_%2F_Virtuoso-red.svg)](#silicon-physical-implementation-cadence-flow)
+[![Simulation](https://img.shields.io/badge/Simulation-ModelSim_SE-green.svg)](#verification--simulation-results)
+[![Standard](https://img.shields.io/badge/Compliance-ISO_26262_ASIL--D-orange.svg)](#cycle-breakdown--iso-26262-determinism)
 [![License](https://img.shields.io/badge/License-Academic_Open_Access-purple.svg)](#license)
 
 Hardware implementation of a memory-bound Artificial Neural Network (ANN) accelerator tailored for Autonomous Emergency Braking (AEB) and Autonomous Emergency Steering (AES) systems. Designed, simulated, synthesized, and placed-and-routed down to the GDSII physical layout in 45nm standard CMOS technology.
